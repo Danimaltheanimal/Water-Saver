@@ -1,0 +1,66 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "water tracker",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "StartShower",
+                    "slots": [],
+                    "samples": [
+                        "start the shower",
+                        "start my shower",
+                        "start shower"
+                    ]
+                },
+                {
+                    "name": "StopShower",
+                    "slots": [],
+                    "samples": [
+                        "stop my shower",
+                        "stop shower",
+                        "stop the shower"
+                    ]
+                },
+                {
+                    "name": "ShowerHistory",
+                    "slots": [],
+                    "samples": [
+                        "tell me about my recent showers",
+                        "show my recent showers",
+                        "display my shower history",
+                        "show my shower history"
+                    ]
+                },
+                {
+                    "name": "Flush",
+                    "slots": [],
+                    "samples": [
+                        "flush",
+                        "flush the toilet"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}
