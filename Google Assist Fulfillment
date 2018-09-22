@@ -1,0 +1,83 @@
+const functions = require('firebase-functions')
+const {dialogflow} = require('actions-on-google')
+
+const WELC = 'Welcome'
+const START = 'StartShower'
+const STOP = 'Stop Shower'
+const HIST = 'ShowerHistorian'
+const ORDER_TYPE = 'order'
+const OPT = 'options'
+const FLUSH = 'Flush'
+const EDIT_FLUSH = 'EditflowFlush'
+
+var start;
+var milli;
+var seconds;
+var minutes;
+var seconds2;
+var minute2;
+var gal2 = 0;
+var newstore;
+var flushrate = 1.6;
+var flushes = 0;
+var flushgal;
+var numShowers = 0;
+var galtot = 0;
+var galShow;
+
+const app = dialogflow()
+
+
+app.intent(START, (conv) => 
+{
+    start = new Date().getTime();
+    conv.ask("OK, starting shower.")
+
+
+})
+
+app.intent(STOP, (conv) =>
+{
+    numShowers = numShowers + 1;
+    conv.ask("Stopping shower.")
+    milli = new Date().getTime() - start;
+    seconds = Math.floor(milli / 1000);
+    minutes = Math.floor(seconds/60);
+    seconds = seconds - (minutes * 60);
+    gal = (minutes * 2.1) + (seconds * (2.1/60));
+    gal = gal.toFixed(2);
+    galtot = eval(galtot) + eval(gal);
+    conv.ask(" Your shower took " + minutes + " minutes " + seconds + " seconds and used " + gal + " gallons of water.")
+    if(gal2 === 0)
+    {
+        minute2 = minutes;
+        seconds2 = seconds;
+        gal2 = gal;
+        newstore = 1;
+    }
+})
+
+app.intent(HIST, (conv) =>
+{
+flushgal = flushes * flushrate;
+galtot = galtot.toFixed(2);
+conv.ask("Here is your water usage ticket:  \n")
+conv.ask("This session, you used " + galtot + " gallons of water. You flushed the toilet " + flushes + " times and used " + flushgal.toFixed(2) + " gallons of water. You also took " + numShowers + " showers and used " + (eval(galtot) - eval(flushgal)).toFixed(2) + " gallons of water. In West Lafayette, the price for your water usage this session is $" + (galtot * 0.002789).toFixed(2))
+})
+
+app.intent(OPT, (conv) =>
+{
+    conv.ask("So you'd like to make an adjustment? Tell me, what would you like to do? Enter showerhead flowrate, enter toilet flowrate, erase data.")
+})
+app.intent(EDIT_FLUSH, (conv) =>
+{
+    conv.ask("Your flushrate is " + flushrate + " gallons per flush, what value would you like to use?")
+})
+app.intent(FLUSH, (conv) =>
+{
+    flushes = flushes + 1;
+    galtot = eval(galtot) + eval(flushrate);
+    conv.ask("You flushed the toilet and used " + flushrate + " gallons of water.")
+})
+
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app)
